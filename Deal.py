@@ -1,5 +1,6 @@
 import pymysql.cursors
 
+
 class Deal(object):
     cur_capital = 0.00
     cur_money_lock = 0.00
@@ -11,9 +12,13 @@ class Deal(object):
     stock_all = []
     ban_list = []
 
-    def __init__(self,state_dt):
+    def __init__(self, state_dt):
         # 建立数据库连接
-        db = pymysql.connect(host='127.0.0.1', user='root', passwd='admin', db='stock', charset='utf8')
+        db = pymysql.connect(host='127.0.0.1',
+                             user='root',
+                             passwd='admin',
+                             db='stock',
+                             charset='utf8')
         cursor = db.cursor()
         try:
             sql_select = 'select * from my_capital a order by seq desc limit 1'
@@ -41,17 +46,18 @@ class Deal(object):
                 self.stock_map2 = {x[0]: int(x[2]) for x in done_set2}
                 self.stock_map3 = {x[0]: int(x[3]) for x in done_set2}
             for i in range(len(done_set2)):
-                sql = "select * from stock_info a where a.stock_code = '%s' and a.state_dt = '%s'"%(done_set2[i][0],state_dt)
+                sql = "select * from stock_info a where a.stock_code = '%s' and a.state_dt = '%s'" % (
+                    done_set2[i][0], state_dt)
                 cursor.execute(sql)
                 done_temp = cursor.fetchall()
                 db.commit()
-                self.cur_money_lock += float(done_temp[0][3]) * float(done_set2[i][2])
+                self.cur_money_lock += float(done_temp[0][3]) * float(
+                    done_set2[i][2])
             # sql_select3 = 'select * from ban_list'
             # cursor.execute(sql_select3)
             # done_set3 = cursor.fetchall()
             # if len(done_set3) > 0:
             #     self.ban_list = [x[0] for x in done_set3]
-
 
         except Exception as excp:
             #db.rollback()
