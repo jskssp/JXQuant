@@ -1,16 +1,17 @@
+# -*- coding:utf8 -*-
 from sklearn import svm
 import pymysql.cursors
 import datetime
 import DC
-import tushare as ts
+import config as cfg
 
 
 def model_eva(stock, state_dt, para_window, para_dc_window):
     # 建立数据库连接，设置tushare token
     db = pymysql.connect(host='127.0.0.1',
-                         user='root',
-                         passwd='admin',
-                         db='stock',
+                         user=cfg.dbuser,
+                         passwd=cfg.dbpwd,
+                         db=cfg.dbname,
                          charset='utf8')
     cursor = db.cursor()
     ts.set_token('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
@@ -46,13 +47,14 @@ def model_eva(stock, state_dt, para_window, para_dc_window):
             if len(set(dc.data_target)) <= 1:
                 continue
         except Exception as exp:
-            print("DC Errrrr")
+            print("DC Error")
             return_flag = 1
             break
         train = dc.data_train
         target = dc.data_target
         test_case = [dc.test_case]
-        model = svm.SVC()  # 建模
+
+        model = svm.SVC(gamma='auto')  # 建模
         model.fit(train, target)  # 训练
         ans2 = model.predict(test_case)  # 预测
         # 将预测结果插入到中间表

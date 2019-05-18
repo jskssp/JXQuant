@@ -37,7 +37,7 @@ if __name__ == '__main__':
             print('No DATA Code: ' + str(i))
             continue
         for j in range(c_len):
-            resu0 = list(df.ix[c_len - 1 - j])
+                resu0 = list(df.iloc[c_len - 1 - j])
             resu = []
             for k in range(len(resu0)):
                 if str(resu0[k]) == 'nan':

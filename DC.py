@@ -1,7 +1,7 @@
 # -*- coding:utf8 -*-
 import numpy as np
 import pymysql
-
+import config as cfg
 
 class data_collect(object):
     def __init__(self, in_code, start_dt, end_dt):
@@ -10,9 +10,9 @@ class data_collect(object):
     def collectDATA(self, in_code, start_dt, end_dt):
         # 建立数据库连接，获取日线基础行情(开盘价，收盘价，最高价，最低价，成交量，成交额)
         db = pymysql.connect(host='127.0.0.1',
-                             user='root',
-                             passwd='admin',
-                             db='stock',
+                             user=cfg.dbuser,
+                             passwd=cfg.dbpwd,
+                             db=cfg.dbname,
                              charset='utf8')
         cursor = db.cursor()
         sql_done_set = "SELECT * FROM stock_all a where stock_code = '%s' and state_dt >= '%s' and state_dt <= '%s' order by state_dt asc" % (

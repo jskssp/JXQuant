@@ -26,12 +26,10 @@ def get_sharp_rate():
         if i == 0:
             return_list.append(float(1.00))
         else:
-            ri = (float(done_exp[i][0]) - float(done_exp[0][0])) / float(
-                done_exp[0][0])
+            ri = (float(done_exp[i][0]) - base_cap) / base_cap
             return_list.append(ri)
     std = float(np.array(return_list).std())
-    exp_portfolio = (float(done_exp[-1][0]) - float(done_exp[0][0])) / float(
-        done_exp[0][0])
+    exp_portfolio = (float(done_exp[-1][0]) - base_cap) / base_cap
     exp_norisk = 0.04 * (5.0 / 12.0)
     sharp_rate = (exp_portfolio - exp_norisk) / (std)
 

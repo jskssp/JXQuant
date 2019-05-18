@@ -1,23 +1,25 @@
+# -*- coding:utf8 -*-
 import pymysql.cursors
 import Deal
 import Operator
+import config as cfg
 
 
 def filter_main(stock_new, state_dt, predict_dt, poz):
     # 建立数据库连接
     db = pymysql.connect(host='127.0.0.1',
-                         user='root',
-                         passwd='admin',
-                         db='stock',
+                         user=cfg.dbuser,
+                         passwd=cfg.dbpwd,
+                         db=cfg.dbname,
                          charset='utf8')
     cursor = db.cursor()
 
-    #先更新持股天数
+    # 先更新持股天数
     sql_update_hold_days = 'update my_stock_pool w set w.hold_days = w.hold_days + 1'
     cursor.execute(sql_update_hold_days)
     db.commit()
 
-    #先卖出
+    # 先卖出
     deal = Deal.Deal(state_dt)
     stock_pool_local = deal.stock_pool
     for stock in stock_pool_local:
@@ -30,7 +32,7 @@ def filter_main(stock_new, state_dt, predict_dt, poz):
             predict = int(done_set_predict[0][0])
         ans = Operator.sell(stock, state_dt, predict)
 
-    #后买入
+    # 后买入
     for stock_index in range(len(stock_new)):
         deal_buy = Deal.Deal(state_dt)
 

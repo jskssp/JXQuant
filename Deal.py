@@ -1,4 +1,6 @@
+# -*- coding:utf8 -*-
 import pymysql.cursors
+import config as cfg
 
 
 class Deal(object):
@@ -15,9 +17,9 @@ class Deal(object):
     def __init__(self, state_dt):
         # 建立数据库连接
         db = pymysql.connect(host='127.0.0.1',
-                             user='root',
-                             passwd='admin',
-                             db='stock',
+                             user=cfg.dbuser,
+                             passwd=cfg.dbpwd,
+                             db=cfg.dbname,
                              charset='utf8')
         cursor = db.cursor()
         try:
@@ -60,7 +62,7 @@ class Deal(object):
             #     self.ban_list = [x[0] for x in done_set3]
 
         except Exception as excp:
-            #db.rollback()
+            # db.rollback()
             print(excp)
 
         db.close()

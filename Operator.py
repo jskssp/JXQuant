@@ -1,17 +1,18 @@
 import pymysql.cursors
 import Deal
+import config as cfg
 
 
 def buy(stock_code, opdate, buy_money):
     # 建立数据库连接
     db = pymysql.connect(host='127.0.0.1',
-                         user='root',
-                         passwd='admin',
-                         db='stock',
+                         user=cfg.dbuser,
+                         passwd=cfg.dbpwd,
+                         db=cfg.dbname,
                          charset='utf8')
     cursor = db.cursor()
     deal_buy = Deal.Deal(opdate)
-    #后买入
+    # 后买入
     if deal_buy.cur_money_rest + 1 >= buy_money:
         sql_buy = "select * from stock_info a where a.state_dt = '%s' and a.stock_code = '%s'" % (
             opdate, stock_code)
@@ -64,9 +65,9 @@ def buy(stock_code, opdate, buy_money):
 def sell(stock_code, opdate, predict):
     # 建立数据库连接
     db = pymysql.connect(host='127.0.0.1',
-                         user='root',
-                         passwd='admin',
-                         db='stock',
+                         user=cfg.dbuser,
+                         passwd=cfg.dbpwd,
+                         db=cfg.dbname,
                          charset='utf8')
     cursor = db.cursor()
 
